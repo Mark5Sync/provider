@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+use marksync\provider\Runner;
+
+$root = isset($GLOBALS['_composer_autoload_path']) ? $GLOBALS['_composer_autoload_path'] : __DIR__;
+
+$root = findComposerJson($root);
+if (!$root)
+    exit('composer.json not found');
+
+require "$root/vendor/autoload.php";
+
+if ($root) {
+
+    $composer = json_decode(file_get_contents("$root/composer.json"), true);
+    new Runner($root, $composer['autoload']['psr-4'], 'markers');
+
+} else {
+    echo "Composer.json not found.\n";
+    exit(1);
+}
+
+// Функция для поиска файла composer.json вверх по директориям
+function findComposerJson($dir)
+{
+    if (is_null($dir))
+        $dir = __DIR__;
+
+    while ($dir !== '/' && $dir !== \DIRECTORY_SEPARATOR) {
+        $root = $dir . \DIRECTORY_SEPARATOR . 'composer.json';
+        if (file_exists($root)) {
+            return $dir;
+        }
+
+        $dir = \dirname($dir);
+    }
+
+    return null;
+}
+
+exit(0);
