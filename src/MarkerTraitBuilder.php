@@ -13,7 +13,7 @@ class MarkerTraitBuilder
         $methods = "";
 
         foreach ($markers as $marker) {
-            if (in_array($marker->marker, ['markdi']))
+            if (in_array($marker->marker, ['markdi', 'provider']))
                 continue;
 
             $this->toCode(
@@ -31,13 +31,13 @@ class MarkerTraitBuilder
         $code = <<<CODE
                 <?php
                 namespace {$marker->markerNamespace};
-                use markdi\markdi;
+                use marksync\provider\provider;
                 $namespaces
                 /**
                 $varibles
                 */
                 trait {$marker->marker} {
-                    use markdi;
+                    use provider;
 
                 $methods
                 }
