@@ -77,7 +77,8 @@ class MarkerTraitBuilder
             : '()';
 
         $modeSymbol = $marker->mode == Mark::LOCAL    ? '_'    : '';
-        $methods   .= "   function $modeSymbol{$marker->prop}$mehodProps: {$marker->shortName} { return new {$marker->shortName}$props; }\n";
+        $prop = ucfirst($marker->prop);
+        $methods   .= "   function {$modeSymbol}create{$prop}$mehodProps: {$marker->shortName} { return new {$marker->shortName}$props; }\n";
     }
 
 
