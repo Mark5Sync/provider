@@ -9,7 +9,8 @@ trait provider
     /**
      * @xdebug_never
      */
-    public function __get($alias){
+    public function __get($alias)
+    {
         if (!isset($this->___binding___[$alias]))
             $this->___binding___[$alias] = $this->__getAlias__($alias);
 
@@ -19,22 +20,33 @@ trait provider
 
     private function __getAlias__(string $alias)
     {
-        if (method_exists($this, "_$alias"))
-            return $this->{"_$alias"}();
+        if ($object = $this->__checkAliasPrefix__('create' . ucfirst($alias)))
+            return $object;
 
-        if (method_exists($this, $alias))
-            if (Container::isset($alias))
-                return Container::get($alias);
-            else
-                return Container::set($alias, $this->$alias());
+        if ($object = $this->__checkAliasPrefix__($alias))
+            return $object;
+
         else
-            if (method_exists($this, '___get')) 
+            if (method_exists($this, '___get'))
                 return $this->___get($alias);
     }
 
 
-    private function super(string $alias){
-        return fn($class) => Container::set($alias, $class);
+    private function __checkAliasPrefix__(string $frefixAlias)
+    {
+        if (method_exists($this, "_$frefixAlias"))
+            return $this->{"_$frefixAlias"}();
+
+        if (method_exists($this, $frefixAlias))
+            if (Container::isset($frefixAlias))
+                return Container::get($frefixAlias);
+            else
+                return Container::set($frefixAlias, $this->$frefixAlias());
     }
 
+
+    private function super(string $alias)
+    {
+        return fn ($class) => Container::set($alias, $class);
+    }
 }
