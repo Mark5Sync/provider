@@ -3,23 +3,35 @@
 namespace marksync\provider;
 
 
-final class Container {
+final class Container
+{
 
     static $namespace = 'default';
     static $list = [];
 
-    static function isset($alias){
+    static function take(string $class)
+    {
+        if (static::isset($class))
+            return static::get($class);
+
+        return static::set($class, new $class);
+    }
+
+    static function isset($alias)
+    {
         return isset(static::$list[static::$namespace][$alias]);
     }
 
-    static function get($alias){
+    static function get($alias)
+    {
         if (!isset(static::$list[static::$namespace][$alias]))
             return null;
 
         return static::$list[static::$namespace][$alias];
     }
 
-    static function set($alias, $component){
+    static function set($alias, $component)
+    {
         if (!isset(static::$list[static::$namespace]))
             static::$list[static::$namespace] = [];
 
@@ -28,19 +40,23 @@ final class Container {
         return $component;
     }
 
-    static function reset(){
+    static function reset()
+    {
         static::$list = [];
     }
 
-    static function resetNamespace(){
+    static function resetNamespace()
+    {
         static::$list[static::$namespace] = [];
     }
 
-    static function setNamespace($name = 'default'){
+    static function setNamespace($name = 'default')
+    {
         static::$namespace = $name;
     }
 
-    static function runNamespace(string $name, callable $run){
+    static function runNamespace(string $name, callable $run)
+    {
         $old = static::$namespace;
 
         static::setNamespace($name);
@@ -48,5 +64,4 @@ final class Container {
         static::setNamespace($old);
         unset(static::$list[$name]);
     }
-
 }
