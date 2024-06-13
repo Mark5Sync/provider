@@ -34,14 +34,14 @@ trait provider
 
     private function __checkAliasPrefix__(string $frefixAlias)
     {
-        if (method_exists($this, "_$frefixAlias"))
-            return $this->{"_$frefixAlias"}();
+        if (method_exists($this, "_{$frefixAlias}"))
+            return $this->{"_{$frefixAlias}"}();
 
         if (method_exists($this, $frefixAlias))
             if (Container::isset($frefixAlias))
                 return Container::get($frefixAlias);
             else
-                return Container::set($frefixAlias, $this->$frefixAlias());
+                return Container::set($frefixAlias, $this->{$frefixAlias}());
     }
 
 
