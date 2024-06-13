@@ -31,7 +31,8 @@ class ReflectionMark
     }
 
 
-    private function except(string $message){
+    private function except(string $message)
+    {
         $this->exception = $message;
     }
 
@@ -50,7 +51,7 @@ class ReflectionMark
         $this->namespace = $reflection->getNamespaceName();
         $this->shortName = $reflection->getShortName();
 
-        
+
         $this->setMarkerInfo();
 
         $this->prop = lcfirst($this->shortName);
@@ -108,7 +109,7 @@ class ReflectionMark
                 }
 
                 $variadi = '';
-                if ($prop->isVariadic()){
+                if ($prop->isVariadic()) {
                     $variadi = '...';
                 }
                 $this->args["$variadi$full"] = "$variadi$" . $prop->getName();
@@ -118,7 +119,8 @@ class ReflectionMark
     }
 
 
-    function getNType($prop){
+    function getNType($prop)
+    {
         $type = $prop->getType();
 
         switch ($type) {
@@ -127,12 +129,14 @@ class ReflectionMark
             case 'bool':
             case 'array':
             case 'double':
-            case 'NULL':
+            case 'null':
 
                 break;
-            
+
             default:
-                $type = '\\'. $type;
+                $type = '\\' . $type;
+                if ($type == '\\')
+                    $type == '';
                 break;
         }
 
