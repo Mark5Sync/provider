@@ -2,12 +2,6 @@
 
 namespace marksync\provider;
 
-use PhpParser\Node;
-use PhpParser\Node\Stmt\Namespace_;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
-use PhpParser\ParserFactory;
-use PhpParser\PrettyPrinter;
 
 class NamespaceController
 {

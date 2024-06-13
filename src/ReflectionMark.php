@@ -101,7 +101,7 @@ class ReflectionMark
                     $defaultValue = $prop->getDefaultValue();
                 }
 
-                $full = trim($prop->getType() . ' $' . $prop->getName());
+                $full = trim($this->getNType($prop) . ' $' . $prop->getName());
 
                 if (!is_null($defaultValue)) {
                     $full .= " = " . var_export($defaultValue, true);
@@ -117,6 +117,27 @@ class ReflectionMark
         }
     }
 
+
+    function getNType($prop){
+        $type = $prop->getType();
+
+        switch ($type) {
+            case 'string':
+            case 'int':
+            case 'bool':
+            case 'array':
+            case 'double':
+            case 'NULL':
+
+                break;
+            
+            default:
+                $type = '\\'. $type;
+                break;
+        }
+
+        return $type;
+    }
 
 
     private function setMarkerInfo()
