@@ -66,6 +66,7 @@ class MarkerTraitBuilder
         &$methods,
     ) {
 
+
         $props = $this->getProps($marker->args, $marker->prop, $marker->mode);
         $namespaces .= "use $marker->className;\n";
 
