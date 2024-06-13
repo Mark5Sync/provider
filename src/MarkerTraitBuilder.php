@@ -66,8 +66,8 @@ class MarkerTraitBuilder
         &$methods,
     ) {
 
-
-        $props = $this->getProps($marker->args, $marker->prop, $marker->mode);
+        $prop = 'create' . ucfirst($marker->prop);
+        $props = $this->getProps($marker->args, $prop, $marker->mode);
         $namespaces .= "use $marker->className;\n";
 
         if ($marker->mode != Mark::INSTANCE)
@@ -78,8 +78,8 @@ class MarkerTraitBuilder
             : '()';
 
         $modeSymbol = $marker->mode == Mark::LOCAL    ? '_'    : '';
-        $prop = ucfirst($marker->prop);
-        $methods   .= "   function {$modeSymbol}create{$prop}$mehodProps: {$marker->shortName} { return new {$marker->shortName}$props; }\n";
+        
+        $methods   .= "   function {$modeSymbol}{$prop}$mehodProps: {$marker->shortName} { return new {$marker->shortName}$props; }\n";
     }
 
 
