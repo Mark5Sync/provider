@@ -24,10 +24,16 @@ final class Container
 
     static function get($alias)
     {
-        if (!isset(static::$list[static::$namespace][$alias]))
-            return null;
+        if (isset(static::$list[static::$namespace][$alias]))
+            return static::$list[static::$namespace][$alias];
 
-        return static::$list[static::$namespace][$alias];
+        $mark = new ReflectionMark($alias);
+        $component = new $alias;
+
+        static::$list[static::$namespace][$mark->prop] = &$component;
+        static::$list[static::$namespace][$alias] = &$component;
+
+        return $component;
     }
 
     static function set($alias, $component)
@@ -35,7 +41,8 @@ final class Container
         if (!isset(static::$list[static::$namespace]))
             static::$list[static::$namespace] = [];
 
-        static::$list[static::$namespace][$alias] = $component;
+        static::$list[static::$namespace][$alias] = &$component;
+        static::$list[static::$namespace][get_class($component)] = &$component;
 
         return $component;
     }
