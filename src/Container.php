@@ -49,6 +49,10 @@ final class Container
 
     static function reset()
     {
+        foreach (static::$list as &$item) {
+            $item = null; 
+        }
+        unset($item);
         static::$list = [];
     }
 
