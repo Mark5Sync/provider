@@ -121,7 +121,7 @@ class ReflectionMark
 
     function getNType($prop)
     {
-        $type = $prop->getType();
+        $type = $prop->getType() . '';
 
         switch ($type) {
             case 'string':
@@ -130,6 +130,12 @@ class ReflectionMark
             case 'array':
             case 'double':
             case 'null':
+
+            case '?string':
+            case '?int':
+            case '?bool':
+            case '?array':
+            case '?double':
 
                 break;
 
