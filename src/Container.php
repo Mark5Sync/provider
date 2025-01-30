@@ -47,13 +47,17 @@ final class Container
         return $component;
     }
 
-    static function reset()
+    static function reset(?array $exceptions = null)
     {
-        foreach (static::$list as &$item) {
-            $item = null; 
+        foreach (static::$list as &$alias) {
+            foreach ($alias as $key => $class) {
+                if ($exceptions)
+                if (in_array($class::class, $exceptions))
+                    continue;
+
+                unset($alias[$key]);
+            }
         }
-        unset($item);
-        static::$list = [];
     }
 
     static function resetNamespace()
